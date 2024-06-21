@@ -2,6 +2,7 @@ package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.ExpenseDTO;
+import org.example.budgetking.DTO.TotalMoneyResponse;
 import org.example.budgetking.Repository.ExpenseRepository;
 import org.example.budgetking.Service.ExpenseService;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,11 @@ public class ExpenseController {
     }
 
     @GetMapping("/total")
-    public ResponseEntity<Double> getTotalExpenses() {
-        return ResponseEntity.ok(ExpenseRepository.sumAllExpenses());
+    public ResponseEntity<TotalMoneyResponse> getTotalMoney() {
+        Double totalMoney = ExpenseRepository.sumAllExpenses();
+        TotalMoneyResponse response = new TotalMoneyResponse();
+        response.setTotalMoney(totalMoney);
+        response.setMessage("Total money calculated successfully");
+        return ResponseEntity.ok(response);
     }
 }

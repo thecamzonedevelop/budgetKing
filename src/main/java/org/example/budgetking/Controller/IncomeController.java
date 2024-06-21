@@ -2,6 +2,7 @@ package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.IncomeDTO;
+import org.example.budgetking.DTO.TotalMoneyResponse;
 import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.IncomeService;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class IncomeController {
 
     /**
      * Creates a new income.
+     *
      * @param incomeDTO The income to create.
      * @return The created income.
      */
@@ -41,6 +43,7 @@ public class IncomeController {
 
     /**
      * Deletes an income.
+     *
      * @param id The ID of the income to delete.
      * @return A ResponseEntity with no content.
      */
@@ -52,6 +55,7 @@ public class IncomeController {
 
     /**
      * Retrieves all incomes.
+     *
      * @param pageable The pagination information.
      * @return A page of incomes.
      */
@@ -62,8 +66,9 @@ public class IncomeController {
 
     /**
      * Retrieves incomes between two dates.
-     * @param start The start date.
-     * @param end The end date.
+     *
+     * @param start    The start date.
+     * @param end      The end date.
      * @param pageable The pagination information.
      * @return A page of incomes between the two dates.
      */
@@ -74,10 +79,15 @@ public class IncomeController {
 
     /**
      * Retrieves the total of all incomes.
+     *
      * @return The total of all incomes.
      */
     @GetMapping("/total")
-    public ResponseEntity<Double> getTotalIncomes() {
-        return ResponseEntity.ok(incomeRepository.sumAllIncomes());
+    public ResponseEntity<TotalMoneyResponse> getTotalMoney() {
+        Double totalMoney = incomeRepository.sumAllIncomes();
+        TotalMoneyResponse response = new TotalMoneyResponse();
+        response.setTotalMoney(totalMoney);
+        response.setMessage("Total money calculated successfully");
+        return ResponseEntity.ok(response);
     }
 }

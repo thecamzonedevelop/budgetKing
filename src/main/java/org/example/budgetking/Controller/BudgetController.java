@@ -3,6 +3,7 @@ package org.example.budgetking.Controller;
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.BudgetDTO;
 import org.example.budgetking.DTO.CombinedBudgetItemDTO;
+import org.example.budgetking.DTO.TotalMoneyResponse;
 import org.example.budgetking.Service.BudgetService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,8 +33,11 @@ public class BudgetController {
         return ResponseEntity.ok(budgetService.getCombinedBudgetItems(PageRequest.of(page, size)));
     }
     @GetMapping("/total-money")
-    public ResponseEntity<Double> getTotalMoney() {
+    public ResponseEntity<TotalMoneyResponse> getTotalMoney() {
         Double totalMoney = budgetService.getTotalMoney();
-        return ResponseEntity.ok(totalMoney);
+        TotalMoneyResponse response = new TotalMoneyResponse();
+        response.setTotalMoney(totalMoney);
+        response.setMessage("Total money calculated successfully");
+        return ResponseEntity.ok(response);
     }
 }
