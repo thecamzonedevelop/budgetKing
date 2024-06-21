@@ -25,4 +25,8 @@ public class Expense {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "budget_id")
     private Budget budget;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

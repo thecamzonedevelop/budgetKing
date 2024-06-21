@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.IncomeDTO;
 import org.example.budgetking.DTO.Mapper.IncomeMapper;
 import org.example.budgetking.Model.Budget;
+import org.example.budgetking.Model.Category;
 import org.example.budgetking.Model.Income;
 import org.example.budgetking.Repository.BudgetRepository;
+import org.example.budgetking.Repository.CategoryRepository;
 import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.IncomeService;
 import org.springframework.data.domain.Page;
@@ -20,17 +22,22 @@ public class IncomeServiceImpl implements IncomeService {
     private final IncomeRepository incomeRepository;
     private final BudgetRepository budgetRepository;
     private final IncomeMapper incomeMapper;
+    private final CategoryRepository categoryRepository;
 
 
     public IncomeDTO createIncome(IncomeDTO incomeDTO) {
         Income income = incomeMapper.toEntity(incomeDTO);
+        Category category = categoryRepository.findById(incomeDTO.getCategoryID()).orElseThrow(() -> new RuntimeException("Category not found"));
         Budget budget = budgetRepository.findById(1L).orElseThrow(() -> new RuntimeException("Budget not found"));
         income.setBudget(budget);
+        income.setCategory(category);
         return incomeMapper.toDto(incomeRepository.save(income));
     }
 
-    public IncomeDTO updateIncome(Long id, IncomeDTO incomeDTO) {
-        Income income = incomeRepository.findById(id).orElseThrow(() -> new RuntimeException("Income not found"));
+    public IncomeDTO updateIncome(IncomeDTO incomeDTO) {
+        Income income = incomeRepository.findById(incomeDTO.getId()).orElseThrow(() -> new RuntimeException("Income not found"));
+        Category category = categoryRepository.findById(incomeDTO.getCategoryID()).orElseThrow(() -> new RuntimeException("Category not found"));
+        income.setCategory(category);
         income.setSource(incomeDTO.getSource());
         income.setAmount(incomeDTO.getAmount());
         income.setDate(incomeDTO.getDate());

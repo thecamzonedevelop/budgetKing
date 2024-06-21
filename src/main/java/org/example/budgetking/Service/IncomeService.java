@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public interface IncomeService {
     IncomeDTO createIncome(IncomeDTO incomeDTO);
-    IncomeDTO updateIncome(Long id, IncomeDTO incomeDTO);
+    IncomeDTO updateIncome(IncomeDTO incomeDTO);
     void deleteIncome(Long id);
     Page<IncomeDTO> getAllIncomes(Pageable pageable);
     Page<IncomeDTO> getIncomesBetweenDates(LocalDate start, LocalDate end, Pageable pageable);

@@ -1,16 +1,14 @@
 package org.example.budgetking.DTO;
 
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Data
-public class ExpenseDTO {
+public class CombinedBudgetItemDTO {
     private Long id;
     private String description;
     private Double amount;
     private LocalDate date;
-    private Long categoryID;
     private String categoryName;
-    private Boolean enabled;
+    private String type; // "income" or "expense"
 }

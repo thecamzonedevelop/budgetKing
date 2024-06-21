@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ExpenseDTO {
+public class TransactionDTO {
     private Long id;
     private String description;
     private Double amount;
@@ -13,4 +13,5 @@ public class ExpenseDTO {
     private Long categoryID;
     private String categoryName;
     private Boolean enabled;
+    private String type; // This will hold either "Income" or "Expense"
 }

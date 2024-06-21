@@ -10,5 +10,7 @@ public class IncomeDTO {
     private String source;
     private Double amount;
     private LocalDate date;
+    private Long categoryID;
+    private String categoryName;
     private Boolean enabled;
 }

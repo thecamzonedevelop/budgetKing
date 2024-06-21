@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public interface ExpenseService {
     ExpenseDTO createExpense(ExpenseDTO expenseDTO);
-    ExpenseDTO updateExpense(Long id, ExpenseDTO expenseDTO);
+    ExpenseDTO updateExpense(ExpenseDTO expenseDTO);
     void deleteExpense(Long id);
     Page<ExpenseDTO> getAllExpenses(Pageable pageable);
     Page<ExpenseDTO> getExpensesBetweenDates(LocalDate start, LocalDate end, Pageable pageable);

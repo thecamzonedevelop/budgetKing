@@ -33,15 +33,10 @@ public class IncomeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(incomeService.createIncome(incomeDTO));
     }
 
-    /**
-     * Updates an existing income.
-     * @param id The ID of the income to update.
-     * @param incomeDTO The updated income.
-     * @return The updated income.
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<IncomeDTO> updateIncome(@PathVariable Long id, @RequestBody IncomeDTO incomeDTO) {
-        return ResponseEntity.ok(incomeService.updateIncome(id, incomeDTO));
+
+    @PostMapping("/update")
+    public ResponseEntity<IncomeDTO> updateIncome(@RequestBody IncomeDTO incomeDTO) {
+        return ResponseEntity.ok(incomeService.updateIncome(incomeDTO));
     }
 
     /**
@@ -49,8 +44,8 @@ public class IncomeController {
      * @param id The ID of the income to delete.
      * @return A ResponseEntity with no content.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIncome(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public ResponseEntity<Void> deleteIncome(@RequestParam Long id) {
         incomeService.deleteIncome(id);
         return ResponseEntity.noContent().build();
     }

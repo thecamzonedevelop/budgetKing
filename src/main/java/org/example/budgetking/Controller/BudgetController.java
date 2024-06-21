@@ -2,12 +2,12 @@ package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.BudgetDTO;
+import org.example.budgetking.DTO.CombinedBudgetItemDTO;
 import org.example.budgetking.Service.BudgetService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/budget")
@@ -26,8 +26,10 @@ public class BudgetController {
     }
 
     @GetMapping("/report")
-    public ResponseEntity<BudgetDTO> getReport() {
-        return ResponseEntity.ok(budgetService.getBudget());
+    public ResponseEntity<Page<CombinedBudgetItemDTO>> getCombinedBudgetItems(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+        return ResponseEntity.ok(budgetService.getCombinedBudgetItems(PageRequest.of(page, size)));
     }
     @GetMapping("/total-money")
     public ResponseEntity<Double> getTotalMoney() {
