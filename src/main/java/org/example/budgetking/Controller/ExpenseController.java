@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/expenses")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080")
 public class ExpenseController {
     private final ExpenseService expenseService;
     private final ExpenseRepository ExpenseRepository;
