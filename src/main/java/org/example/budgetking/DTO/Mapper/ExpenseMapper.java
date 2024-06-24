@@ -10,9 +10,11 @@ public interface ExpenseMapper {
 
     @Mapping(target = "categoryID" , source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "type", constant = "Expense")
     ExpenseDTO toDto(Expense expense);
 
     @Mapping(target = "category.id", source = "categoryID")
     @Mapping(target = "category.name", source = "categoryName")
+    @Mapping(target = "category.type", source = "type")
     Expense toEntity(ExpenseDTO expenseDTO);
 }

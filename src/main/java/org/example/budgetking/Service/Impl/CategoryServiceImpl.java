@@ -20,11 +20,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @PostConstruct
     public void init() {
-        List<String> names = Arrays.asList("Groceries", "Rent", "Utilities", "Entertainment", "Transportation", "Healthcare", "Clothing", "Education", "Dining Out", "Miscellaneous");
-        for (String name : names) {
+        List<String> names = Arrays.asList("Groceries,", "Rent", "Utilities", "Entertainment", "Transportation", "Healthcare", "Clothing", "Education", "Dining Out", "Miscellaneous");
+        int halfSize = names.size() / 2;
+        for (int i = 0; i < names.size(); i++) {
             Category category = new Category();
-            category.setName(name);
+            category.setName(names.get(i));
+            if (i < halfSize) {
+                category.setType(Category.Type.INCOME);
+            } else {
+                category.setType(Category.Type.EXPENSE);
+            }
             categoryRepository.save(category);
         }
+    }
+    @Override
+    public List<Category> getCategoriesByType(Category.Type type) {
+        return categoryRepository.findByType(type);
     }
 }

@@ -2,16 +2,18 @@ package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.IncomeDTO;
-import org.example.budgetking.DTO.TotalMoneyResponse;
+import org.example.budgetking.DTO.TotalIncomeDetails;
 import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.IncomeService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.budgetking.DTO.CategoryTotal;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * This class is a REST controller for managing incomes.
@@ -83,12 +85,13 @@ public class IncomeController {
      *
      * @return The total of all incomes.
      */
-    @GetMapping("/total")
-    public ResponseEntity<TotalMoneyResponse> getTotalMoney() {
-        Double totalMoney = incomeRepository.sumAllIncomes();
-        TotalMoneyResponse response = new TotalMoneyResponse();
-        response.setTotalMoney(totalMoney);
-        response.setMessage("Total money calculated successfully");
-        return ResponseEntity.ok(response);
-    }
+
+
+@GetMapping("/total")
+public ResponseEntity<TotalIncomeDetails> getTotalIncomeDetails() {
+    Double totalIncome = incomeRepository.sumAllIncomes();
+    List<CategoryTotal> categoryTotals = incomeRepository.sumIncomesByCategory();
+    TotalIncomeDetails totalIncomeDetails = new TotalIncomeDetails(totalIncome, categoryTotals);
+    return ResponseEntity.ok(totalIncomeDetails);
+}
 }

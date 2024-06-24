@@ -1,7 +1,9 @@
 package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.budgetking.DTO.CategoryTotal;
 import org.example.budgetking.DTO.ExpenseDTO;
+import org.example.budgetking.DTO.TotalIncomeDetails;
 import org.example.budgetking.DTO.TotalMoneyResponse;
 import org.example.budgetking.Repository.ExpenseRepository;
 import org.example.budgetking.Service.ExpenseService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -19,7 +22,7 @@ import java.time.LocalDate;
 @CrossOrigin(origins = "http://localhost:8080")
 public class ExpenseController {
     private final ExpenseService expenseService;
-    private final ExpenseRepository ExpenseRepository;
+    private final ExpenseRepository expenseRepository;
 
     @PostMapping
     public ResponseEntity<ExpenseDTO> createExpense(@RequestBody ExpenseDTO expenseDTO) {
@@ -48,11 +51,10 @@ public class ExpenseController {
     }
 
     @GetMapping("/total")
-    public ResponseEntity<TotalMoneyResponse> getTotalMoney() {
-        Double totalMoney = ExpenseRepository.sumAllExpenses();
-        TotalMoneyResponse response = new TotalMoneyResponse();
-        response.setTotalMoney(totalMoney);
-        response.setMessage("Total money calculated successfully");
-        return ResponseEntity.ok(response);
-    }
+    public ResponseEntity<TotalIncomeDetails> getTotalExpensesDetails() {
+    Double totalExpenses = expenseRepository.sumAllExpenses();
+    List<CategoryTotal> categoryTotals = expenseRepository.sumExpensesByCategory();
+    TotalIncomeDetails totalExpensesDetails = new TotalIncomeDetails(totalExpenses, categoryTotals);
+    return ResponseEntity.ok(totalExpensesDetails);
+}
 }

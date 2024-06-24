@@ -4,4 +4,5 @@ import org.example.budgetking.Model.Category;
 import java.util.List;
 public interface CategoryService {
     List<Category> getAllCategories();
+    List<Category> getCategoriesByType(Category.Type type);
 }

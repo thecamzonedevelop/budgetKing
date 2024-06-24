@@ -11,4 +11,10 @@ public class Category {
     private Long id;
     private String name;
 
+    public enum Type {
+        INCOME,
+        EXPENSE
+    }
+    private Type type;
+
 }

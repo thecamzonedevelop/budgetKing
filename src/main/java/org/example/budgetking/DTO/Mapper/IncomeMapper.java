@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface IncomeMapper {
     @Mapping(target = "categoryID" , source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "type", constant = "Income")
     IncomeDTO toDto(Income income);
     @Mapping(target = "category.id", source = "categoryID")
     @Mapping(target = "category.name", source = "categoryName")

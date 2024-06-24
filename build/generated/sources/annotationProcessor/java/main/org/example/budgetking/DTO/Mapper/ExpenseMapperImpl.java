@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-23T21:05:19+0700",
+    date = "2024-06-24T19:54:16+0700",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.8.jar, environment: Java 21.0.3 (Oracle Corporation)"
 )
 @Component
@@ -29,6 +29,8 @@ public class ExpenseMapperImpl implements ExpenseMapper {
         expenseDTO.setAmount( expense.getAmount() );
         expenseDTO.setDate( expense.getDate() );
         expenseDTO.setEnabled( expense.getEnabled() );
+
+        expenseDTO.setType( "Expense" );
 
         return expenseDTO;
     }
@@ -90,6 +92,9 @@ public class ExpenseMapperImpl implements ExpenseMapper {
 
         category.setId( expenseDTO.getCategoryID() );
         category.setName( expenseDTO.getCategoryName() );
+        if ( expenseDTO.getType() != null ) {
+            category.setType( Enum.valueOf( Category.Type.class, expenseDTO.getType() ) );
+        }
 
         return category;
     }

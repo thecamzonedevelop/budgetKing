@@ -6,5 +6,6 @@ import lombok.Data;
 
 public class TotalMoneyResponse {
     private Double totalMoney;
-    private String message;
+    private Double totalIncome;
+    private Double totalExpense;
 }

@@ -12,5 +12,6 @@ public class IncomeDTO {
     private LocalDate date;
     private Long categoryID;
     private String categoryName;
+    private String type; // This will hold either "Income" or "Expense"
     private Boolean enabled;
 }

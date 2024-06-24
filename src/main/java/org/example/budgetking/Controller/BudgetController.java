@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.BudgetDTO;
 import org.example.budgetking.DTO.CombinedBudgetItemDTO;
 import org.example.budgetking.DTO.TotalMoneyResponse;
+import org.example.budgetking.Repository.ExpenseRepository;
+import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.BudgetService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:8080")
 public class BudgetController {
     private final BudgetService budgetService;
+    private final IncomeRepository incomeRepository;
+    private final ExpenseRepository expenseRepository;
 
     @GetMapping
     public ResponseEntity<BudgetDTO> getBudget() {
@@ -38,7 +42,8 @@ public class BudgetController {
         Double totalMoney = budgetService.getTotalMoney();
         TotalMoneyResponse response = new TotalMoneyResponse();
         response.setTotalMoney(totalMoney);
-        response.setMessage("Total money calculated successfully");
+        response.setTotalIncome(incomeRepository.sumAllIncomes());
+        response.setTotalExpense(expenseRepository.sumAllExpenses());
         return ResponseEntity.ok(response);
     }
 }
