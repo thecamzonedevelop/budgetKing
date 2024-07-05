@@ -15,6 +15,7 @@ public class Income {
     private Long id;
 
     private String source;
+    private String remarks;
 
     private Double amount;
 

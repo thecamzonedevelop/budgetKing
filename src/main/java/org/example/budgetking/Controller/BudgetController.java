@@ -11,7 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Pageable;
+import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/budget")
 @RequiredArgsConstructor
@@ -46,4 +47,13 @@ public class BudgetController {
         response.setTotalExpense(expenseRepository.sumAllExpenses());
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/budgetreport")
+    public ResponseEntity<Page<CombinedBudgetItemDTO>> getBudgetItemsBetweenDates(
+        @RequestParam LocalDate start,
+        @RequestParam LocalDate end,
+        @RequestParam(required = false) String type,
+        Pageable pageable) {
+    return ResponseEntity.ok(budgetService.getBudgetItemsBetweenDates(start, end, type, pageable));
 }
+}
+

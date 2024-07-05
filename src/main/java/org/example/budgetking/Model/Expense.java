@@ -15,6 +15,7 @@ public class Expense {
     private Long id;
 
     private String description;
+    private String remarks;
 
     private Double amount;
 

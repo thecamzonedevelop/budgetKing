@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class CombinedBudgetItemDTO {
     private Long id;
     private String description;
+    private String remarks;
     private Double amount;
     private LocalDate date;
     private String categoryName;

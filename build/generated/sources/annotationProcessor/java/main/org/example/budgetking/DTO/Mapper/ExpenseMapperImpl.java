@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-26T15:21:56+0700",
+    date = "2024-07-05T23:27:04+0700",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.8.jar, environment: Java 21.0.3 (Oracle Corporation)"
 )
 @Component
@@ -24,8 +24,9 @@ public class ExpenseMapperImpl implements ExpenseMapper {
 
         expenseDTO.setCategoryID( expenseCategoryId( expense ) );
         expenseDTO.setCategoryName( expenseCategoryName( expense ) );
-        expenseDTO.setId( expense.getId() );
         expenseDTO.setDescription( expense.getDescription() );
+        expenseDTO.setId( expense.getId() );
+        expenseDTO.setRemarks( expense.getRemarks() );
         expenseDTO.setAmount( expense.getAmount() );
         expenseDTO.setDate( expense.getDate() );
         expenseDTO.setEnabled( expense.getEnabled() );
@@ -44,8 +45,9 @@ public class ExpenseMapperImpl implements ExpenseMapper {
         Expense expense = new Expense();
 
         expense.setCategory( expenseDTOToCategory( expenseDTO ) );
-        expense.setId( expenseDTO.getId() );
         expense.setDescription( expenseDTO.getDescription() );
+        expense.setId( expenseDTO.getId() );
+        expense.setRemarks( expenseDTO.getRemarks() );
         expense.setAmount( expenseDTO.getAmount() );
         expense.setDate( expenseDTO.getDate() );
         expense.setEnabled( expenseDTO.getEnabled() );

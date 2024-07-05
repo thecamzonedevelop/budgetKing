@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class IncomeDTO {
     private Long id;
     private String source;
+    private String remarks;
     private Double amount;
     private LocalDate date;
     private Long categoryID;

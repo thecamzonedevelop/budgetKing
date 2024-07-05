@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class ExpenseDTO {
     private Long id;
     private String description;
+    private String remarks;
     private Double amount;
     private LocalDate date;
     private Long categoryID;
