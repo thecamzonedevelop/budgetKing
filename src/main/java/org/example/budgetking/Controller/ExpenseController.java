@@ -2,6 +2,7 @@ package org.example.budgetking.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.CategoryTotal;
+import org.example.budgetking.DTO.DeleteRequest;
 import org.example.budgetking.DTO.ExpenseDTO;
 import org.example.budgetking.DTO.TotalIncomeDetails;
 import org.example.budgetking.Repository.ExpenseRepository;
@@ -37,8 +38,8 @@ public class ExpenseController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteExpense(@RequestParam Long id) {
-        expenseService.deleteExpense(id);
+    public ResponseEntity<Void> deleteExpense(@RequestBody DeleteRequest deleteRequest) {
+        expenseService.deleteExpense(deleteRequest.getId());
         return ResponseEntity.noContent().build();
     }
 
