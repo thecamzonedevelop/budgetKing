@@ -6,19 +6,18 @@ import org.example.budgetking.DTO.TotalIncomeDetails;
 import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.IncomeService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.budgetking.DTO.CategoryTotal;
 
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
-/**
- * This class is a REST controller for managing incomes.
- * It provides endpoints for creating, updating, deleting, and retrieving incomes.
- */
 @RestController
 @RequestMapping("/api/incomes")
 @CrossOrigin(origins = "*")
@@ -27,71 +26,40 @@ public class IncomeController {
     private final IncomeService incomeService;
     private final IncomeRepository incomeRepository;
 
-    /**
-     * Creates a new income.
-     *
-     * @param incomeDTO The income to create.
-     * @return The created income.
-     */
     @PostMapping
     public ResponseEntity<IncomeDTO> createIncome(@RequestBody IncomeDTO incomeDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(incomeService.createIncome(incomeDTO));
     }
-
 
     @PostMapping("/update")
     public ResponseEntity<IncomeDTO> updateIncome(@RequestBody IncomeDTO incomeDTO) {
         return ResponseEntity.ok(incomeService.updateIncome(incomeDTO));
     }
 
-    /**
-     * Deletes an income.
-     *
-     * @param id The ID of the income to delete.
-     * @return A ResponseEntity with no content.
-     */
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteIncome(@RequestParam Long id) {
         incomeService.deleteIncome(id);
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Retrieves all incomes.
-     *
-     * @param pageable The pagination information.
-     * @return A page of incomes.
-     */
     @GetMapping
     public ResponseEntity<Page<IncomeDTO>> getAllIncomes(Pageable pageable) {
-        return ResponseEntity.ok(incomeService.getAllIncomes(pageable));
+        Pageable sortedByAmountDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("amount").descending());
+        return ResponseEntity.ok(incomeService.getAllIncomes(sortedByAmountDesc));
     }
 
-    /**
-     * Retrieves incomes between two dates.
-     *
-     * @param start    The start date.
-     * @param end      The end date.
-     * @param pageable The pagination information.
-     * @return A page of incomes between the two dates.
-     */
     @GetMapping("/report")
     public ResponseEntity<Page<IncomeDTO>> getIncomesBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end, Pageable pageable) {
-        return ResponseEntity.ok(incomeService.getIncomesBetweenDates(start, end, pageable));
+        Pageable sortedByAmountDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("amount").descending());
+        return ResponseEntity.ok(incomeService.getIncomesBetweenDates(start, end, sortedByAmountDesc));
     }
 
-    /**
-     * Retrieves the total of all incomes.
-     *
-     * @return The total of all incomes.
-     */
-
-
-@GetMapping("/total")
-public ResponseEntity<TotalIncomeDetails> getTotalIncomeDetails() {
-    Double totalIncome = incomeRepository.sumAllIncomes();
-    List<CategoryTotal> categoryTotals = incomeRepository.sumIncomesByCategory();
-    TotalIncomeDetails totalIncomeDetails = new TotalIncomeDetails(totalIncome, categoryTotals);
-    return ResponseEntity.ok(totalIncomeDetails);
-}
+    @GetMapping("/total")
+    public ResponseEntity<TotalIncomeDetails> getTotalIncomeDetails() {
+        Double totalIncome = incomeRepository.sumAllIncomes();
+        List<CategoryTotal> categoryTotals = incomeRepository.sumIncomesByCategory();
+        categoryTotals.sort(Comparator.comparingDouble(CategoryTotal::getTotal).reversed());
+        TotalIncomeDetails totalIncomeDetails = new TotalIncomeDetails(totalIncome, categoryTotals);
+        return ResponseEntity.ok(totalIncomeDetails);
+    }
 }

@@ -4,16 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.CategoryTotal;
 import org.example.budgetking.DTO.ExpenseDTO;
 import org.example.budgetking.DTO.TotalIncomeDetails;
-import org.example.budgetking.DTO.TotalMoneyResponse;
 import org.example.budgetking.Repository.ExpenseRepository;
 import org.example.budgetking.Service.ExpenseService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -42,19 +44,23 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<Page<ExpenseDTO>> getAllExpenses(Pageable pageable) {
-        return ResponseEntity.ok(expenseService.getAllExpenses(pageable));
+        Pageable sortedByAmountDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("amount").descending());
+        return ResponseEntity.ok(expenseService.getAllExpenses(sortedByAmountDesc));
     }
 
     @GetMapping("/report")
     public ResponseEntity<Page<ExpenseDTO>> getExpensesBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end, Pageable pageable) {
-        return ResponseEntity.ok(expenseService.getExpensesBetweenDates(start, end, pageable));
+        Pageable sortedByAmountDesc = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("amount").descending());
+        return ResponseEntity.ok(expenseService.getExpensesBetweenDates(start, end, sortedByAmountDesc));
     }
 
     @GetMapping("/total")
     public ResponseEntity<TotalIncomeDetails> getTotalExpensesDetails() {
-    Double totalExpenses = expenseRepository.sumAllExpenses();
-    List<CategoryTotal> categoryTotals = expenseRepository.sumExpensesByCategory();
-    TotalIncomeDetails totalExpensesDetails = new TotalIncomeDetails(totalExpenses, categoryTotals);
-    return ResponseEntity.ok(totalExpensesDetails);
-}
+        Double totalExpenses = expenseRepository.sumAllExpenses();
+        List<CategoryTotal> categoryTotals = expenseRepository.sumExpensesByCategory();
+        // Sort categoryTotals by totalAmount in descending order
+        categoryTotals.sort(Comparator.comparingDouble(CategoryTotal::getTotal).reversed());
+        TotalIncomeDetails totalExpensesDetails = new TotalIncomeDetails(totalExpenses, categoryTotals);
+        return ResponseEntity.ok(totalExpensesDetails);
+    }
 }
