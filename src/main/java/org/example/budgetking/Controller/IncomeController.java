@@ -36,7 +36,8 @@ public class IncomeController {
         return ResponseEntity.ok(incomeService.updateIncome(incomeDTO));
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Void> deleteIncome(@RequestParam Long id) {
         incomeService.deleteIncome(id);
         return ResponseEntity.noContent().build();
