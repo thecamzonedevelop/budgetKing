@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -63,11 +64,13 @@ public class BudgetServiceImpl implements BudgetService {
                     return item;
                 })
         ).collect(Collectors.toList());
-
+        List<CombinedBudgetItemDTO> combinedItemsSorted = combinedItems.stream()
+                .sorted(Comparator.comparing(CombinedBudgetItemDTO::getAmount).reversed())
+                .collect(Collectors.toList());
         int start = Math.min((int) pageable.getOffset(), combinedItems.size());
         int end = Math.min((start + pageable.getPageSize()), combinedItems.size());
 
-        return new PageImpl<>(combinedItems.subList(start, end), pageable, combinedItems.size());
+        return new PageImpl<>(combinedItems.subList(start, end), pageable, combinedItemsSorted.size());
     }
 
     public BudgetDTO getBudget() {
@@ -141,11 +144,13 @@ public Page<CombinedBudgetItemDTO> getBudgetItemsBetweenDates(LocalDate start, L
             })
             .collect(Collectors.toList()));
     }
-
+    List<CombinedBudgetItemDTO> sortedItems = items.stream()
+        .sorted(Comparator.comparing(CombinedBudgetItemDTO::getAmount).reversed())
+        .collect(Collectors.toList());
     int startOfPage = (int) pageable.getOffset();
     int endOfPage = Math.min((startOfPage + pageable.getPageSize()), items.size());
     List<CombinedBudgetItemDTO> pageContent = items.subList(startOfPage, endOfPage);
 
-    return new PageImpl<>(pageContent, pageable, items.size());
+    return new PageImpl<>(pageContent, pageable, sortedItems.size());
 }
 }

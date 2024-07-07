@@ -37,4 +37,5 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategoriesByType(Category.Type type) {
         return categoryRepository.findByType(type);
     }
+
 }
