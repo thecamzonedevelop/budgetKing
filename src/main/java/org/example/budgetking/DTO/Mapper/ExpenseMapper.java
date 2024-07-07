@@ -10,7 +10,7 @@ public interface ExpenseMapper {
 
     @Mapping(target = "categoryID" , source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "type", constant = "Expense")
+    @Mapping(target = "type", constant = "expense")
     @Mapping(target = "description", source = "expense.description")
     ExpenseDTO toDto(Expense expense);
 

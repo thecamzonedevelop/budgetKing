@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-05T23:32:14+0700",
+    date = "2024-07-07T00:59:35+0700",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.8.jar, environment: Java 21.0.3 (Oracle Corporation)"
 )
 @Component
@@ -31,7 +31,7 @@ public class IncomeMapperImpl implements IncomeMapper {
         incomeDTO.setDate( income.getDate() );
         incomeDTO.setEnabled( income.getEnabled() );
 
-        incomeDTO.setType( "Income" );
+        incomeDTO.setType( "income" );
 
         return incomeDTO;
     }
