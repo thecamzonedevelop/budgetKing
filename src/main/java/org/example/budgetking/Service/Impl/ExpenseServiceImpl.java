@@ -54,9 +54,21 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Page<ExpenseDTO> getAllExpenses(Pageable pageable) {
-        return expenseRepository.findAllByEnabledTrue(pageable).map(expenseMapper::toDto);
+        return expenseRepository.findAllByEnabledTrue(pageable).map(this::ExpenseConvertToDto);
     }
-
+    private ExpenseDTO ExpenseConvertToDto(Expense expense) {
+        ExpenseDTO dto = new ExpenseDTO();
+        dto.setId(expense.getId());
+        dto.setAmount(expense.getAmount());
+        dto.setDescription(expense.getDescription());
+        dto.setRemarks(expense.getRemarks());
+        dto.setDate(expense.getDate());
+        dto.setCategoryID(expense.getCategory() != null ? expense.getCategory().getId() : null);
+        dto.setCategoryName(expense.getCategory() != null ? expense.getCategory().getName() : null);
+        dto.setType("Expense");
+        dto.setEnabled(expense.getEnabled());
+        return dto;
+    }
 
     public Page<ExpenseDTO> getExpensesBetweenDates(LocalDate start, LocalDate end, Pageable pageable) {
         return expenseRepository.findAllByDateBetweenAndEnabledTrue(start, end, pageable).map(expenseMapper::toDto);

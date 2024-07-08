@@ -38,9 +38,9 @@ public class IncomeController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteIncome(@RequestBody DeleteRequest deleteRequest) {
+    public ResponseEntity<String> deleteIncome(@RequestBody DeleteRequest deleteRequest) {
         incomeService.deleteIncome(deleteRequest.getId());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Delete Successful");
     }
 
     @GetMapping

@@ -20,17 +20,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @PostConstruct
     public void init() {
-        List<String> names = Arrays.asList("\uD83D\uDED2Groceries,", "\uD83C\uDFE0Rent", "\uD83D\uDCA1Utilities", "\uD83C\uDF89Entertainment", "\uD83D\uDE97Transportation", "🏩Healthcare", "\uD83D\uDC55Clothing", "\uD83C\uDF93Education", "\uD83C\uDF7D\uFE0FDining Out", "\uD83D\uDD2EMiscellaneous");
-        int halfSize = names.size() / 2;
-        for (int i = 0; i < names.size(); i++) {
-            Category category = new Category();
-            category.setName(names.get(i));
-            if (i < halfSize) {
-                category.setType(Category.Type.INCOME);
-            } else {
-                category.setType(Category.Type.EXPENSE);
+        if(categoryRepository.count() == 0) {
+            List<String> names = Arrays.asList("\uD83D\uDED2Groceries,", "\uD83C\uDFE0Rent", "\uD83D\uDCA1Utilities", "\uD83C\uDF89Entertainment", "\uD83D\uDE97Transportation", "🏩Healthcare", "\uD83D\uDC55Clothing", "\uD83C\uDF93Education", "\uD83C\uDF7D\uFE0FDining Out", "\uD83D\uDD2EMiscellaneous");
+            int halfSize = names.size() / 2;
+            for (int i = 0; i < names.size(); i++) {
+                Category category = new Category();
+                category.setName(names.get(i));
+                if (i < halfSize) {
+                    category.setType(Category.Type.INCOME);
+                } else {
+                    category.setType(Category.Type.EXPENSE);
+                }
+                categoryRepository.save(category);
             }
-            categoryRepository.save(category);
         }
     }
     @Override

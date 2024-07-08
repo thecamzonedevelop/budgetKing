@@ -1,6 +1,7 @@
 package org.example.budgetking.DTO;
 
 import lombok.Data;
+import org.example.budgetking.Model.Income;
 
 import java.time.LocalDate;
 
@@ -16,3 +17,4 @@ public class IncomeDTO {
     private String type; // This will hold either "Income" or "Expense"
     private Boolean enabled;
 }
+
