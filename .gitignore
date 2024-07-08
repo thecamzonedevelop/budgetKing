@@ -3,3 +3,8 @@
 .gradle
 .DS_Store
 build
+/.gradle
+/.gradle
+/build.gradle
+/build
+/.idea
