@@ -60,7 +60,6 @@ To get started with BudgetKing, clone the repository and install the dependencie
 ```bash
 git clone https://github.com/daaanhe/budgetKing.git
 cd budgetKing
-./gradlew build
 ```
 
 ## Environment Setup
@@ -82,16 +81,8 @@ Alternatively, you can set these properties in the `application.properties` file
 
 ## Running the Application
 
-After setting up the environment, you can run the application using the following command:
-
-```bash
-./gradlew bootRun
-```
-
-You can also run the application directly in IntelliJ IDEA by opening the project and running the `main` method of the `BudgetKingApplication` class.
+You can run the application directly in IntelliJ IDEA by opening the project and running the main method of the `BudgetKingApplication` class. Or you can run the application following your own development environment.
 
 ## Postman Collection
 
 A Postman collection with example requests for all endpoints is included in the application resources. You can import this collection into Postman to easily test the API endpoints.
-
----
