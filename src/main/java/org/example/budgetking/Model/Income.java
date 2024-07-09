@@ -30,4 +30,8 @@ public class Income {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public boolean isEnabled() {
+        return Boolean.TRUE.equals(this.enabled);
+    }
 }

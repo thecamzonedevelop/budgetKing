@@ -37,8 +37,12 @@ public class BudgetServiceImpl implements BudgetService {
     private final BudgetMapper budgetMapper;
 
     public Page<CombinedBudgetItemDTO> getCombinedBudgetItems(Pageable pageable) {
-        List<Income> incomes = incomeRepository.findAll();
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Income> incomes = incomeRepository.findAll().stream()
+                .filter(Income::isEnabled) // Assuming isEnabled method exists
+                .collect(Collectors.toList());
+        List<Expense> expenses = expenseRepository.findAll().stream()
+                .filter(Expense::isEnabled) // Assuming isEnabled method exists
+                .collect(Collectors.toList());
 
         List<CombinedBudgetItemDTO> combinedItems = Stream.concat(
                 incomes.stream().map(income -> {
@@ -113,6 +117,7 @@ public Page<CombinedBudgetItemDTO> getBudgetItemsBetweenDates(LocalDate start, L
 
     if (type == null || type.equalsIgnoreCase("income")) {
         items.addAll(incomeRepository.findAll().stream()
+                .filter(Income::isEnabled)
             .filter(income -> !income.getDate().isBefore(start) && !income.getDate().isAfter(end))
             .map(income -> {
                 CombinedBudgetItemDTO dto = new CombinedBudgetItemDTO();
@@ -130,6 +135,7 @@ public Page<CombinedBudgetItemDTO> getBudgetItemsBetweenDates(LocalDate start, L
 
     if (type == null || type.equalsIgnoreCase("expense")) {
         items.addAll(expenseRepository.findAll().stream()
+                .filter(Expense::isEnabled)
             .filter(expense -> !expense.getDate().isBefore(start) && !expense.getDate().isAfter(end))
             .map(expense -> {
                 CombinedBudgetItemDTO dto = new CombinedBudgetItemDTO();

@@ -38,9 +38,9 @@ public class ExpenseController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteExpense(@RequestBody DeleteRequest deleteRequest) {
+    public ResponseEntity<String> deleteExpense(@RequestBody DeleteRequest deleteRequest) {
         expenseService.deleteExpense(deleteRequest.getId());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Delete Successful");
     }
 
     @GetMapping

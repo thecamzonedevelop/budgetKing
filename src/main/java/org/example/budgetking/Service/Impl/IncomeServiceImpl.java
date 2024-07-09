@@ -12,6 +12,7 @@ import org.example.budgetking.Repository.IncomeRepository;
 import org.example.budgetking.Service.IncomeService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.example.budgetking.DTO.IncomeDTO;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
@@ -52,9 +53,22 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
 
-public Page<IncomeDTO> getAllIncomes(Pageable pageable) {
-    return incomeRepository.findAllByEnabledTrue(pageable).map(incomeMapper::toDto);
-}
+    public Page<IncomeDTO> getAllIncomes(Pageable pageable) {
+        return incomeRepository.findAllByEnabledTrue(pageable).map(this::IncomeConvertToDto);
+    }
+    private IncomeDTO IncomeConvertToDto(Income income) {
+        IncomeDTO dto = new IncomeDTO();
+        dto.setId(income.getId());
+        dto.setAmount(income.getAmount());
+        dto.setDate(income.getDate());
+        dto.setSource(income.getSource());
+        dto.setCategoryID(income.getCategory() != null ? income.getCategory().getId() : null);
+        dto.setCategoryName(income.getCategory() != null ? income.getCategory().getName() : null);
+        dto.setType("Income");
+        dto.setRemarks(income.getRemarks());
+        dto.setEnabled(income.isEnabled());
+        return dto;
+    }
 
 public Page<IncomeDTO> getIncomesBetweenDates(LocalDate start, LocalDate end, Pageable pageable) {
     return incomeRepository.findAllByDateBetweenAndEnabledTrue(start, end, pageable).map(incomeMapper::toDto);
