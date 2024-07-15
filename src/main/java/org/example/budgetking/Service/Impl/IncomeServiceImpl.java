@@ -32,6 +32,7 @@ public class IncomeServiceImpl implements IncomeService {
         Budget budget = budgetRepository.findById(1L).orElseThrow(() -> new RuntimeException("Budget not found"));
         income.setBudget(budget);
         income.setCategory(category);
+        income.setEnabled(true);
         return incomeMapper.toDto(incomeRepository.save(income));
     }
 

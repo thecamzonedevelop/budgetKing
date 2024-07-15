@@ -1,5 +1,7 @@
 package org.example.budgetking.Service.Impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.budgetking.DTO.BudgetDTO;
 import org.example.budgetking.DTO.CombinedBudgetItemDTO;
@@ -35,6 +37,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final IncomeRepository incomeRepository;
     private final ExpenseRepository expenseRepository;
     private final BudgetMapper budgetMapper;
+    private final EntityManager entityManager;
 
     public Page<CombinedBudgetItemDTO> getCombinedBudgetItems(Pageable pageable) {
         List<Income> incomes = incomeRepository.findAll().stream()
@@ -84,9 +87,14 @@ public class BudgetServiceImpl implements BudgetService {
 
 
 
+    @Transactional
     public BudgetDTO resetBudget() {
         incomeRepository.deleteAll();
         expenseRepository.deleteAll();
+        // Assuming the sequences are named 'income_id_seq' and 'expense_id_seq'
+        entityManager.createNativeQuery("ALTER SEQUENCE incomes_id_seq RESTART WITH 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER SEQUENCE expenses_id_seq RESTART WITH 1").executeUpdate();
+
         Budget budget = budgetRepository.findById(1L).orElse(new Budget());
         budget.getIncomes().clear();
         budget.getExpenses().clear();

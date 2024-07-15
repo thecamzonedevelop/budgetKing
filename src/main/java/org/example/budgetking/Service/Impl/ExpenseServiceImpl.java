@@ -31,6 +31,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         Budget budget = budgetRepository.findById(1L).orElseThrow(() -> new RuntimeException("Budget not found"));
         expense.setCategory(category);
         expense.setBudget(budget);
+        expense.setEnabled(true);
         return expenseMapper.toDto(expenseRepository.save(expense));
     }
 

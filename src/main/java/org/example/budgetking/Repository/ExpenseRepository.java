@@ -14,7 +14,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Page<Expense> findAllByEnabledTrue(Pageable pageable);
     Page<Expense> findAllByDateBetweenAndEnabledTrue(LocalDate start, LocalDate end, Pageable pageable);
 
-    @Query("SELECT COALESCE(SUM(e.amount), 0.0) FROM Expense e")
+    @Query("SELECT COALESCE(SUM(e.amount), 0.0) FROM Expense e WHERE e.enabled = true")
     Double sumAllExpenses();
 
     @Query("SELECT new org.example.budgetking.DTO.CategoryTotal(e.category, SUM(e.amount)) FROM Expense e GROUP BY e.category")
