@@ -14,9 +14,10 @@ import java.util.List;
 public interface IncomeRepository extends JpaRepository<Income, Long> {
     Page<Income> findAllByEnabledTrue(Pageable pageable);
     Page<Income> findAllByDateBetweenAndEnabledTrue(LocalDate start, LocalDate end, Pageable pageable);
-    @Query("SELECT COALESCE(SUM(i.amount), 0.0) FROM Income i WHERE i.enabled = true")
+    // In IncomeRepository.java
+    @Query("SELECT SUM(i.amount) FROM Income i WHERE i.enabled = true")
     Double sumAllIncomes();
 
-    @Query("SELECT new org.example.budgetking.DTO.CategoryTotal(i.category, SUM(i.amount)) FROM Income i GROUP BY i.category")
+    @Query("SELECT new org.example.budgetking.DTO.CategoryTotal(i.category, SUM(i.amount)) FROM Income i WHERE i.enabled = true GROUP BY i.category")
     List<CategoryTotal> sumIncomesByCategory();
 }

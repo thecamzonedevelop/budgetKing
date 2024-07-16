@@ -43,6 +43,7 @@ public class IncomeServiceImpl implements IncomeService {
         income.setSource(incomeDTO.getSource());
         income.setAmount(incomeDTO.getAmount());
         income.setDate(incomeDTO.getDate());
+        income.setRemarks(incomeDTO.getRemarks());
         return incomeMapper.toDto(incomeRepository.save(income));
     }
 
@@ -65,7 +66,7 @@ public class IncomeServiceImpl implements IncomeService {
         dto.setSource(income.getSource());
         dto.setCategoryID(income.getCategory() != null ? income.getCategory().getId() : null);
         dto.setCategoryName(income.getCategory() != null ? income.getCategory().getName() : null);
-        dto.setType("Income");
+        dto.setType("income");
         dto.setRemarks(income.getRemarks());
         dto.setEnabled(income.isEnabled());
         return dto;

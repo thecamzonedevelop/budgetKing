@@ -43,6 +43,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setAmount(expenseDTO.getAmount());
         expense.setDate(expenseDTO.getDate());
         expense.setCategory(category);
+        expense.setRemarks(expenseDTO.getRemarks());
         return expenseMapper.toDto(expenseRepository.save(expense));
     }
 
@@ -66,7 +67,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         dto.setDate(expense.getDate());
         dto.setCategoryID(expense.getCategory() != null ? expense.getCategory().getId() : null);
         dto.setCategoryName(expense.getCategory() != null ? expense.getCategory().getName() : null);
-        dto.setType("Expense");
+        dto.setType("expense");
         dto.setEnabled(expense.getEnabled());
         return dto;
     }
